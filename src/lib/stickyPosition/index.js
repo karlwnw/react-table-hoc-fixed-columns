@@ -161,6 +161,14 @@ export default (ReactTable) => {
       const columnsWithFixed = this.getColumnsWithFixed(sortedColumns);
       return columnsWithFixed;
     }
+  
+    getWrappedInstance () {
+      if (!this.wrappedInstance) { console.warn('ReactTableFixedColumns - No wrapped instance') }
+      if (this.wrappedInstance.getWrappedInstance) {
+        return this.wrappedInstance.getWrappedInstance()
+      }
+      return this.wrappedInstance
+    }
 
     render() {
       const {
@@ -174,7 +182,7 @@ export default (ReactTable) => {
       return (
         <ReactTable
           {...props}
-          ref={innerRef}
+          ref={r => (this.wrappedInstance = r)}
           className={cx(className, this.tableClassName, tableClassName, this.uniqClassName)}
           columns={this.getColumns()}
           onResizedChange={this.onResizedChange}
